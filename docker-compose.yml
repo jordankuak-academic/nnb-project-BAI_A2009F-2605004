@@ -18,9 +18,9 @@ services:
       dockerfile: docker/model_test/Dockerfile.test
     image: nn-test
     container_name: nn-test
-    depends_on:
-      train:
-        condition: service_completed_successfully
+    # depends_on:
+    #   train:
+    #     condition: service_completed_successfully
     volumes:
       - ./datasets:/workspace/datasets
       - ./storage:/workspace/storage
