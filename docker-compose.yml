@@ -1,0 +1,29 @@
+services:
+  train:
+    build:
+      context: .
+      dockerfile: docker/model_train/Dockerfile.train
+    image: nn-train
+    container_name: nn-train
+    volumes:
+      - ./datasets:/workspace/datasets
+      - ./storage:/workspace/storage
+    environment:
+      MPLBACKEND: Agg
+    restart: "no"
+
+  test:
+    build:
+      context: .
+      dockerfile: docker/model_test/Dockerfile.test
+    image: nn-test
+    container_name: nn-test
+    depends_on:
+      train:
+        condition: service_completed_successfully
+    volumes:
+      - ./datasets:/workspace/datasets
+      - ./storage:/workspace/storage
+    environment:
+      MPLBACKEND: Agg
+    restart: "no"

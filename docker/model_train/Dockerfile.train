@@ -1,0 +1,35 @@
+FROM python:3.12-slim
+
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1 \
+    PIP_NO_CACHE_DIR=1 \
+    MPLBACKEND=Agg
+
+WORKDIR /workspace
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    libgl1 \
+    libglib2.0-0 \
+    && rm -rf /var/lib/apt/lists/*
+
+COPY docker/model_train/requirements-train.txt /tmp/requirements-train.txt
+
+RUN python -m pip install --upgrade pip && \
+    python -m pip install -r /tmp/requirements-train.txt
+
+RUN mkdir -p \
+    storage/logs \
+    storage/models/versions \
+    storage/models/release \
+    storage/test_results \
+    datasets/images/processed/all \
+    datasets/images/processed/training \
+    datasets/images/processed/validating \
+    datasets/images/processed/testing
+
+COPY app ./app
+COPY configs ./configs
+COPY scripts/train.py ./scripts/
+COPY scripts/initialize.py ./scripts/
+
+CMD ["sh", "-c", "python -m scripts.initialize && python -m scripts.train"]

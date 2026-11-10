@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="data:,">
+  <title>JordanCNN Dashboard</title>
+  <link rel="stylesheet" href="./css/main.css">
+</head>
+<body>
+  <div id="app">
+    <header class="app-header">
+      <div class="app-header__brand">
+        <div class="app-header__logo">JC</div>
+        <div>
+          <h1 class="app-header__title">JordanCNN Dashboard</h1>
+          <p class="app-header__subtitle">Recyclable Waste Classification · 6 Classes</p>
+        </div>
+      </div>
+      <div class="app-header__status" id="model-status">
+        <span class="status-dot status-dot--idle"></span>
+        <span id="model-status-text">Model not evaluated</span>
+      </div>
+    </header>
+
+    <main class="app-main">
+      <section class="panel" id="evaluation-panel">
+        <div class="panel__header">
+          <h2 class="panel__title">Model Evaluation</h2>
+          <button class="btn btn--primary" id="btn-evaluate">
+            <span class="btn__spinner" id="evaluate-spinner" hidden></span>
+            <span id="evaluate-label">Run Test on Testing Set</span>
+          </button>
+        </div>
+        <p class="panel__hint">
+          Runs the evaluator once over the entire <code>datasets/images/processed/testing</code>
+          directory and reports accuracy, macro metrics, per-class performance and
+          the confusion matrix.
+        </p>
+
+        <div class="metrics-grid" id="metrics-grid" hidden>
+          <div class="metric-card">
+            <span class="metric-card__label">Accuracy</span>
+            <span class="metric-card__value" id="metric-accuracy">—</span>
+          </div>
+          <div class="metric-card">
+            <span class="metric-card__label">Macro Precision</span>
+            <span class="metric-card__value" id="metric-precision">—</span>
+          </div>
+          <div class="metric-card">
+            <span class="metric-card__label">Macro Recall</span>
+            <span class="metric-card__value" id="metric-recall">—</span>
+          </div>
+          <div class="metric-card metric-card--accent">
+            <span class="metric-card__label">Macro F1</span>
+            <span class="metric-card__value" id="metric-f1">—</span>
+          </div>
+          <div class="metric-card">
+            <span class="metric-card__label">Weighted F1</span>
+            <span class="metric-card__value" id="metric-weighted-f1">—</span>
+          </div>
+          <div class="metric-card">
+            <span class="metric-card__label">Top-3 Accuracy</span>
+            <span class="metric-card__value" id="metric-top3">—</span>
+          </div>
+          <div class="metric-card">
+            <span class="metric-card__label">Inference (ms/img)</span>
+            <span class="metric-card__value" id="metric-inference">—</span>
+          </div>
+          <div class="metric-card">
+            <span class="metric-card__label">Test Samples</span>
+            <span class="metric-card__value" id="metric-samples">—</span>
+          </div>
+        </div>
+
+        <div class="tables-grid" id="tables-grid" hidden>
+          <div class="table-card">
+            <h3 class="table-card__title">Per-class Performance</h3>
+            <table class="data-table" id="per-class-table">
+              <thead>
+                <tr>
+                  <th>Class</th>
+                  <th>Precision</th>
+                  <th>Recall</th>
+                  <th>F1</th>
+                  <th>Support</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+
+          <div class="table-card">
+            <h3 class="table-card__title">Confusion Matrix</h3>
+            <div class="confusion-wrap">
+              <table class="data-table data-table--matrix" id="confusion-table"></table>
+            </div>
+          </div>
+        </div>
+
+        <div class="baseline-card" id="baseline-card" hidden>
+          <h3 class="table-card__title">Comparison with Majority-Class Baseline</h3>
+          <div class="baseline-grid">
+            <div>
+              <span class="baseline-grid__label">Baseline Accuracy</span>
+              <span class="baseline-grid__value" id="baseline-acc">—</span>
+            </div>
+            <div>
+              <span class="baseline-grid__label">Baseline Macro F1</span>
+              <span class="baseline-grid__value" id="baseline-f1">—</span>
+            </div>
+            <div>
+              <span class="baseline-grid__label">Δ Accuracy</span>
+              <span class="baseline-grid__value baseline-grid__value--positive" id="delta-acc">—</span>
+            </div>
+            <div>
+              <span class="baseline-grid__label">Δ Macro F1</span>
+              <span class="baseline-grid__value baseline-grid__value--positive" id="delta-f1">—</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="alert alert--danger" id="evaluate-error" hidden></div>
+      </section>
+
+      <section class="panel" id="prediction-panel">
+        <div class="panel__header">
+          <h2 class="panel__title">Single Image Prediction</h2>
+        </div>
+        <p class="panel__hint">
+          Upload a single image (JPG / PNG / WebP). The model returns the predicted
+          class and the top-3 probabilities.
+        </p>
+
+        <div class="upload-area" id="upload-area">
+          <input type="file" id="file-input" accept="image/*" hidden>
+          <div class="upload-area__inner" id="upload-inner">
+            <svg class="upload-area__icon" viewBox="0 0 24 24" width="48" height="48" aria-hidden="true">
+              <path fill="none" stroke="currentColor" stroke-width="2"
+                d="M12 16V4m0 0L7 9m5-5l5 5M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/>
+            </svg>
+            <p class="upload-area__title">Click or drop an image here</p>
+            <p class="upload-area__hint">Max 10 MB · JPG / PNG / WebP</p>
+          </div>
+          <img id="preview-image" class="upload-area__preview" alt="Preview" hidden>
+        </div>
+
+        <div class="prediction-actions">
+          <button class="btn btn--primary" id="btn-predict" disabled>
+            <span class="btn__spinner" id="predict-spinner" hidden></span>
+            <span id="predict-label">Analyze Image</span>
+          </button>
+          <button class="btn btn--ghost" id="btn-clear" hidden>Clear</button>
+        </div>
+
+        <div class="prediction-result" id="prediction-result" hidden>
+          <div class="prediction-result__header">
+            <span class="prediction-result__label">Predicted Class</span>
+            <span class="prediction-result__class" id="predicted-class">—</span>
+          </div>
+          <div class="prediction-result__confidence">
+            <span class="prediction-result__label">Confidence</span>
+            <span class="prediction-result__value" id="predicted-confidence">—</span>
+            <div class="confidence-bar">
+              <div class="confidence-bar__fill" id="confidence-fill" style="width:0%"></div>
+            </div>
+          </div>
+          <div class="prediction-result__top3">
+            <span class="prediction-result__label">Top-3</span>
+            <ul class="top3-list" id="top3-list"></ul>
+          </div>
+        </div>
+
+        <div class="alert alert--danger" id="predict-error" hidden></div>
+      </section>
+    </main>
+
+    <footer class="app-footer">
+      <span>JordanCNN · BAI13143 Neural Network Basics · Individual Project</span>
+    </footer>
+  </div>
+
+  <script type="module" src="./js/main.js"></script>
+</body>
+</html>

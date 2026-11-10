@@ -1,0 +1,90 @@
+.metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+@media (min-width: 900px) {
+  .metrics-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+.metric-card {
+  background: #F5F8FF;
+  border: 1px solid #DCE3FF;
+  border-radius: 11px;
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 4px;
+  min-height: 92px;
+}
+
+.metric-card--accent {
+  background: linear-gradient(135deg, #2B47C0, #617DFF);
+  border-color: #2B47C0;
+}
+.metric-card--accent .metric-card__label { color: #E8EDFF; }
+.metric-card--accent .metric-card__value { color: #FAFCFF; }
+
+.metric-card__label {
+  font-size: 11.5px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  color: #656B78;
+}
+
+.metric-card__value {
+  font-size: 20px;
+  font-weight: 700;
+  color: #1A2C7A;
+  font-variant-numeric: tabular-nums;
+}
+
+.baseline-card {
+  margin-top: 6px;
+  padding: 16px 18px;
+  background: #F5F8FF;
+  border: 1px solid #DCE3FF;
+  border-radius: 11px;
+  min-height: 108px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.baseline-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+  gap: 12px;
+  margin-top: 10px;
+}
+
+.baseline-grid > div {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 2px;
+  min-height: 46px;
+}
+
+.baseline-grid__label {
+  font-size: 11.5px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  color: #656B78;
+}
+
+.baseline-grid__value {
+  font-size: 15px;
+  font-weight: 700;
+  color: #1A2C7A;
+  font-variant-numeric: tabular-nums;
+}
+.baseline-grid__value--positive { color: #28A745; }
+.baseline-grid__value--negative { color: #DC3545; }
