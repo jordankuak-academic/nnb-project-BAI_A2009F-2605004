@@ -242,7 +242,7 @@ docker compose run --rm test
 
 ## 11. Generative AI Declaration
 
-Generative AI tools (ChatGPT / Claude) were used for learning and debugging only: to understand weight decay, batch-size effects and Docker volume semantics, and to review code structure. All architecture design, experiment decisions, result interpretation and written analysis are the author's own work. This declaration follows the academic-integrity rules stated in Section 7 of the assignment brief.
+Generative AI tools (ChatGPT / Claude) were used for learning and debugging only: to understand weight decay, batch-size effects and Docker volume semantics, and to review code structure. All architecture design, experiment decisions, result interpretation and written analysis are the author's own work. This declaration follows the academic-integrity rules stated in Section 6 of the assignment brief.
 
 ---
 
