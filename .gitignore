@@ -33,9 +33,9 @@ datasets/images/split_stat.json
 datasets/images/.preprocess-*
 datasets/images/.preprocess-backup-*
 
-storage/**/*.csv
-storage/**/*.pt
-storage/**/*.pkl
-storage/**/*.json
-storage/**/*.png
-storage/**/*.log
+storage/**
+!storage/models/
+!storage/models/release/
+!storage/models/release/model.pt
+!storage/models/release/scaler.pkl
+!storage/models/release/metadata.json

@@ -1,0 +1,38 @@
+{
+  "model_class": "JordanCNN",
+  "device": "cpu",
+  "model_config": {
+    "num_classes": 6,
+    "dropout": 0.3,
+    "learning_rate": 0.0002,
+    "batch_size": 32,
+    "epochs": 30,
+    "min_delta": 0.0
+  },
+  "trainer_config": {
+    "patience": 5,
+    "min_delta": 0.0
+  },
+  "artifacts": {
+    "version_dir": "jordancnn_20261110T062105Z",
+    "model_path": "model.pt",
+    "scaler_path": "scaler.pkl",
+    "metadata_path": "metadata.json",
+    "curves_dir": "curves",
+    "curves": {
+      "loss_curve": "loss_curve.png",
+      "macro_f1_curve": "macro_f1_curve.png",
+      "accuracy_curve": "accuracy_curve.png"
+    }
+  },
+  "result_summary": {
+    "best_epoch": 26,
+    "best_validation_loss": 0.5863,
+    "best_validation_macro_f1": 0.7957,
+    "best_validation_accuracy": 0.811,
+    "best_validation_precision": 0.8123,
+    "best_validation_recall": 0.7899,
+    "stopped_early": false
+  },
+  "saved_at": "2026-11-10T06:21:05.125213+00:00"
+}
