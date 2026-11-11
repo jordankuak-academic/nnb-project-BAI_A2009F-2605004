@@ -249,6 +249,9 @@ Generative AI tools (ChatGPT / Claude) were used for learning and debugging only
 ## 12. Author
 
 **Student ID**: BAI_A2009F-2605004
+
 **Course**: BAI13143 Neural Network Basics
+
 **Institution**: Raffles University
+
 **Submission**: Week 11, 11 November 2026
